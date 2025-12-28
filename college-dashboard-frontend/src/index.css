@@ -1,3 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* Use selector strategy for dark mode (Tailwind v4) */
+@variant dark (&:where(.dark, .dark *));
+
+/* Typography - DM Sans */
+* {
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Headings - DM Sans Medium (500) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+/* Body text, labels, inputs, tables, buttons - DM Sans Regular (400) */
+body, label, input, textarea, select, table, button, p, span, div, a {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+}
+
+/* Theme transitions */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Recharts dark mode support */
+.dark .recharts-cartesian-axis-tick-value {
+  fill: #9CA3AF;
+}
+
+.dark .recharts-tooltip-wrapper {
+  color: #F3F4F6;
+}
+
+/* CSS Variables for tooltip backgrounds */
+:root {
+  --tooltip-bg: #ffffff;
+}
+
+.dark {
+  --tooltip-bg: #1f2937;
+}
