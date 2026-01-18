@@ -10,6 +10,11 @@ const sidebarConfig = [
     link: 'overview',
   },
   {
+    label: 'Notifications',
+    icon: 'ri-notification-3-line',
+    link: 'notifications',
+  },
+  {
     label: 'AI Chatbots',
     icon: 'ri-robot-line',
     link: 'chatbots',
@@ -55,16 +60,7 @@ const sidebarConfig = [
   icon: 'ri-message-3-line',
   link: 'chat',
 },
- {
-  label: 'chat',
-  icon: 'ri-message-3-line',
-  link: 'chat',
-},
- {
-  label: 'chat',
-  icon: 'ri-message-3-line',
-  link: 'chat',
-}
+
 ];
 
 export default sidebarConfig;

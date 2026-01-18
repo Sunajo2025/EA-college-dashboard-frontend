@@ -19,6 +19,7 @@ import ChatbotConfigure from '../pages/ChatbotConfigure';
 import Documents from '../pages/Documents';
 import Admin from '../pages/Admin';
 import KnowledgeBase from '../pages/knowledgeBase';
+import Profile from '../pages/Profile';
 import Notifications from '../pages/Notifications';
 import Integrations from '../pages/Integrations';
 import UsageBilling from '../pages/UsageBilling';
@@ -75,7 +76,8 @@ const AppRoutes = () => {
             <Route path="settings" element={<Settings />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="admin" element={<Admin />} />
-            <Route path="chat" element={<ChatPage />} />
+            <Route path="chat" element={<ChatPage />} /> 
+            <Route path="profile" element={<Profile />} /> 
 
             {/* AI Chatbots */}
             <Route path="chatbots" element={<AIChatbot />} />

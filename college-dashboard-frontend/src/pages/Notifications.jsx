@@ -1,109 +1,99 @@
+/**
+ * Notifications Page
+ * AI Platform Dashboard
+ */
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Bell,
-  CalendarClock,
-  AlertTriangle,
-  ShieldAlert,
-  Users,
-  Wallet,
+  Bot,
+  Database,
+  FileWarning,
+  Workflow,
+  CreditCard,
   Activity,
   Info,
-  X
+  X,
 } from 'lucide-react';
+
+/* ---------- DATA ---------- */
 
 const initialNotifications = [
   {
     id: 1,
-    title: 'New Club Registration',
+    title: 'Chatbot Health Degraded',
     message:
-      'Tech Club has submitted a new registration request and is awaiting admin approval.',
+      'Support Assistant has repeated unanswered questions. Consider retraining the knowledge base.',
     priority: 'High',
-    time: '2 mins ago',
-    icon: ShieldAlert,
+    time: '5 mins ago',
+    icon: Bot,
   },
   {
     id: 2,
-    title: 'Budget Threshold Exceeded',
+    title: 'Knowledge Base Processing Failed',
     message:
-      'Cultural Club funding utilization has crossed the approved limit.',
+      'Billing_Policy.pdf failed during chunking due to unsupported formatting.',
     priority: 'High',
-    time: '10 mins ago',
-    icon: Wallet,
+    time: '15 mins ago',
+    icon: FileWarning,
   },
   {
     id: 3,
-    title: 'Event Schedule Conflict',
+    title: 'Workflow Execution Completed',
     message:
-      'Two clubs have overlapping events scheduled this Friday.',
+      'Invoice Processing workflow completed successfully with 12 extracted fields.',
     priority: 'Medium',
-    time: '30 mins ago',
-    icon: CalendarClock,
+    time: '40 mins ago',
+    icon: Workflow,
   },
   {
     id: 4,
-    title: 'Pending Approvals',
+    title: 'AI Extraction Running',
     message:
-      'Three club activity requests are awaiting approval.',
+      'HR_Profile_Extraction is currently processing employee documents.',
     priority: 'Medium',
     time: '1 hour ago',
     icon: Activity,
   },
   {
     id: 5,
-    title: 'Inactive Club Alert',
+    title: 'Monthly Usage Threshold',
     message:
-      'Photography Club has been inactive for more than 60 days.',
+      'You have consumed 82% of your monthly AI request limit.',
     priority: 'Medium',
-    time: '3 hours ago',
-    icon: AlertTriangle,
+    time: 'Today',
+    icon: CreditCard,
   },
   {
     id: 6,
-    title: 'New Members Joined',
+    title: 'Knowledge Base Updated',
     message:
-      'Five students joined the Sports Club.',
+      'FAQs.pdf and Support_Guide.docx were re-indexed successfully.',
     priority: 'Low',
     time: 'Today',
-    icon: Users,
+    icon: Database,
   },
   {
     id: 7,
-    title: 'Meeting Reminder',
+    title: 'New Chatbot Created',
     message:
-      'Faculty coordination meeting scheduled for tomorrow.',
+      'Invoice Help Bot has been created and is ready for configuration.',
     priority: 'Low',
-    time: 'Today',
-    icon: Bell,
+    time: 'Yesterday',
+    icon: Bot,
   },
   {
     id: 8,
-    title: 'Event Report Submitted',
+    title: 'System Update Deployed',
     message:
-      'Annual Tech Fest report has been submitted.',
-    priority: 'Low',
-    time: 'Yesterday',
-    icon: Info,
-  },
-  {
-    id: 9,
-    title: 'Volunteer Request',
-    message:
-      'NSS Club requested volunteers for campus drive.',
-    priority: 'Low',
-    time: 'Yesterday',
-    icon: Users,
-  },
-  {
-    id: 10,
-    title: 'System Update',
-    message:
-      'New dashboard features have been deployed successfully.',
+      'UI performance improvements and analytics enhancements are now live.',
     priority: 'Low',
     time: '2 days ago',
     icon: Info,
   },
 ];
+
+/* ---------- STYLES ---------- */
 
 const priorityText = {
   High: 'text-red-600 dark:text-red-400',
@@ -112,22 +102,24 @@ const priorityText = {
 };
 
 const iconStyles = {
-  High: 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400',
-  Medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400',
-  Low: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
+  High:
+    'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
+  Medium:
+    'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400',
+  Low:
+    'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
 };
+
+/* ---------- COMPONENT ---------- */
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState(initialNotifications);
   const [openId, setOpenId] = useState(null);
 
-  const handleDiscard = (id) => {
+  const discard = (id) =>
     setNotifications((prev) => prev.filter((n) => n.id !== id));
-  };
 
-  const handleDiscardAll = () => {
-    setNotifications([]);
-  };
+  const discardAll = () => setNotifications([]);
 
   return (
     <div className="p-5 space-y-6">
@@ -139,15 +131,15 @@ const Notifications = () => {
 
         {notifications.length > 0 && (
           <button
-            onClick={handleDiscardAll}
-            className="cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition"
+            onClick={discardAll}
+            className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition"
           >
             Discard All
           </button>
         )}
       </div>
 
-      {/* Notifications List */}
+      {/* List */}
       <div className="space-y-4">
         <AnimatePresence>
           {notifications.map((item) => {
@@ -158,20 +150,13 @@ const Notifications = () => {
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, x: -40 }}
+                initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 140 }}   // left ➜ right dismiss
-                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className={`
-                  relative overflow-hidden rounded-xl shadow-sm transition-theme
-                  ${
-                    isHigh
-                      ? 'bg-white dark:bg-zinc-800'
-                      : 'bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700'
-                  }
-                `}
+                exit={{ opacity: 0, x: 120 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="relative overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 shadow-sm"
               >
-                {/* High Priority Blinking Red Background */}
+                {/* High priority pulse */}
                 {isHigh && (
                   <div className="absolute inset-0 bg-red-50 dark:bg-red-950/30 animate-pulse pointer-events-none" />
                 )}
@@ -182,7 +167,7 @@ const Notifications = () => {
                     onClick={() =>
                       setOpenId(openId === item.id ? null : item.id)
                     }
-                    className="flex items-start justify-between p-4 cursor-pointer"
+                    className="flex justify-between items-start p-4 cursor-pointer"
                   >
                     <div className="flex gap-3">
                       <div
@@ -211,9 +196,9 @@ const Notifications = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDiscard(item.id);
+                          discard(item.id);
                         }}
-                        className="cursor-pointer text-gray-400 hover:text-red-500 transition"
+                        className="text-gray-400 hover:text-red-500 transition"
                       >
                         <X size={16} />
                       </button>
@@ -227,7 +212,7 @@ const Notifications = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-4 text-sm text-gray-700 dark:text-gray-300">
@@ -243,7 +228,7 @@ const Notifications = () => {
         </AnimatePresence>
 
         {notifications.length === 0 && (
-          <div className="text-center py-16 text-sm text-gray-500 dark:text-gray-400">
+          <div className="py-16 text-center text-sm text-gray-500 dark:text-gray-400">
             No notifications available
           </div>
         )}
