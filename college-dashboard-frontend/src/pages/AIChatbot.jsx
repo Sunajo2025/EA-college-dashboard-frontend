@@ -55,17 +55,25 @@ const initialChatbots = [
 const Toggle = ({ enabled, onToggle }) => (
   <button
     onClick={onToggle}
-    className={`relative w-9 h-5 rounded-full transition ${
-      enabled ? 'bg-indigo-600' : 'bg-gray-300 dark:bg-zinc-600'
+    className={`relative w-10 h-5 rounded-full transition-colors focus:outline-none ${
+      enabled
+        ? 'bg-indigo-600'
+        : 'bg-gray-300 dark:bg-zinc-600'
     }`}
   >
     <span
-      className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition ${
-        enabled ? 'translate-x-4' : ''
+      className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform ${
+        enabled ? 'translate-x-5' : ''
       }`}
     />
   </button>
 );
+
+const healthStyles = {
+  Healthy: 'text-green-600 dark:text-green-400',
+  'Needs Training': 'text-yellow-600 dark:text-yellow-400',
+  Inactive: 'text-gray-500 dark:text-gray-400',
+};
 
 const AIChatbots = () => {
   const navigate = useNavigate();
@@ -87,7 +95,7 @@ const AIChatbots = () => {
           AI Chatbots
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Configure behavior, knowledge, and monitor real time performance
+          Configure behavior, knowledge, and monitor real-time performance
         </p>
       </div>
 
@@ -96,7 +104,7 @@ const AIChatbots = () => {
         {chatbotStats.map((item) => (
           <div
             key={item.label}
-            className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-indigo-50 dark:border-zinc-700"
+            className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-100 dark:border-zinc-700"
           >
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {item.label}
@@ -133,7 +141,11 @@ const AIChatbots = () => {
 
             <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
               {chatbots.map((bot) => (
-                <tr key={bot.id}>
+                <tr
+                  key={bot.id}
+                  className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition"
+                >
+                  {/* Chatbot */}
                   <td className="px-6 py-4">
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {bot.name}
@@ -143,6 +155,7 @@ const AIChatbots = () => {
                     </p>
                   </td>
 
+                  {/* Status */}
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -155,12 +168,34 @@ const AIChatbots = () => {
                     </span>
                   </td>
 
-                  <td className="px-6 py-4">{bot.health}</td>
-                  <td className="px-6 py-4">{bot.documents}</td>
-                  <td className="px-6 py-4">{bot.requests.toLocaleString()}</td>
-                  <td className="px-6 py-4">{bot.resolutionRate}</td>
-                  <td className="px-6 py-4">{bot.lastActive}</td>
+                  {/* Health */}
+                  <td
+                    className={`px-6 py-4 ${healthStyles[bot.health]}`}
+                  >
+                    {bot.health}
+                  </td>
 
+                  {/* Documents */}
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {bot.documents}
+                  </td>
+
+                  {/* Requests */}
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {bot.requests.toLocaleString()}
+                  </td>
+
+                  {/* Resolution */}
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {bot.resolutionRate}
+                  </td>
+
+                  {/* Last Active */}
+                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                    {bot.lastActive}
+                  </td>
+
+                  {/* Actions */}
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end items-center gap-4">
                       <Toggle
@@ -169,7 +204,9 @@ const AIChatbots = () => {
                       />
 
                       <button
-                        onClick={() => navigate(`${bot.id}/configure`)}
+                        onClick={() =>
+                          navigate(`/dashboard/chatbots/${bot.id}/configure`)
+                        }
                         className="px-3 py-1.5 rounded-lg text-sm font-medium bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600/20 transition"
                       >
                         Configure
@@ -178,6 +215,17 @@ const AIChatbots = () => {
                   </td>
                 </tr>
               ))}
+
+              {chatbots.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="px-6 py-10 text-center text-gray-500 dark:text-gray-400"
+                  >
+                    No chatbots created yet
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

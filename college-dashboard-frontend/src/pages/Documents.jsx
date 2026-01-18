@@ -59,10 +59,16 @@ const Documents = () => {
     setDocs((prev) =>
       prev.map((d) =>
         d.id === id
-          ? { ...d, status: 'Processing', pages: '—', updated: 'Processing' }
+          ? {
+              ...d,
+              status: 'Processing',
+              pages: '—',
+              updated: 'Processing',
+            }
           : d
       )
     );
+
     setProcessingId(id);
 
     setTimeout(() => {
@@ -104,8 +110,10 @@ const Documents = () => {
             key={s.label}
             className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-100 dark:border-zinc-700"
           >
-            <p className="text-sm text-gray-500">{s.label}</p>
-            <p className="text-2xl font-semibold text-indigo-600 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {s.label}
+            </p>
+            <p className="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
               {s.value}
             </p>
           </div>
@@ -115,7 +123,7 @@ const Documents = () => {
       {/* Table */}
       <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
         <table className="w-full text-sm table-fixed">
-          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600">
+          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600 dark:text-gray-400">
             <tr>
               <th className="px-6 py-3 w-2/6 text-left">Document</th>
               <th className="px-6 py-3 w-1/12 text-left">Type</th>
@@ -131,17 +139,24 @@ const Documents = () => {
               const loading = doc.id === processingId;
 
               return (
-                <tr key={doc.id} className="relative">
+                <tr
+                  key={doc.id}
+                  className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition"
+                >
                   {/* Name */}
-                  <td className="px-6 py-4 font-medium truncate">
+                  <td className="px-6 py-4 font-medium truncate text-gray-900 dark:text-gray-100">
                     {doc.name}
                   </td>
 
                   {/* Type */}
-                  <td className="px-6 py-4">{doc.type}</td>
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {doc.type}
+                  </td>
 
                   {/* Chatbot */}
-                  <td className="px-6 py-4">{doc.chatbot}</td>
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
+                    {doc.chatbot}
+                  </td>
 
                   {/* Status */}
                   <td className="px-6 py-4">
@@ -156,7 +171,7 @@ const Documents = () => {
                   </td>
 
                   {/* Pages */}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
                     {loading ? '—' : doc.pages}
                   </td>
 
@@ -165,26 +180,18 @@ const Documents = () => {
                     <div className="flex justify-end gap-3">
                       <button
                         onClick={() => reprocessDoc(doc.id)}
-                        className="px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium hover:bg-indigo-600/20 transition"
                       >
                         Reprocess
                       </button>
                       <button
                         onClick={() => removeDoc(doc.id)}
-                        className="px-3 py-1.5 rounded-lg bg-red-600/10 text-red-600 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-lg bg-red-600/10 text-red-600 dark:text-red-400 text-xs font-medium hover:bg-red-600/20 transition"
                       >
                         Remove
                       </button>
                     </div>
                   </td>
-
-                  {/* Skeleton overlay */}
-                  {loading && (
-                    <td
-                      colSpan={6}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-pulse pointer-events-none"
-                    />
-                  )}
                 </tr>
               );
             })}
@@ -193,7 +200,7 @@ const Documents = () => {
               <tr>
                 <td
                   colSpan={6}
-                  className="px-6 py-10 text-center text-gray-500"
+                  className="px-6 py-10 text-center text-gray-500 dark:text-gray-400"
                 >
                   No documents found
                 </td>

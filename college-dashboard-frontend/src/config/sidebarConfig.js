@@ -14,6 +14,7 @@ const sidebarConfig = [
     icon: 'ri-robot-line',
     link: 'chatbots',
   },
+  
   {
     label: 'Knowledge Base',
     icon: 'ri-database-2-line',
@@ -49,11 +50,12 @@ const sidebarConfig = [
     icon: 'ri-wallet-3-line',
     link: 'billing',
   },
-  {
-    label: 'Settings',
-    icon: 'ri-settings-3-line',
-    link: 'settings',
-  },
+ {
+  label: 'chat',
+  icon: 'ri-message-3-line',
+  link: 'chat',
+}
+
 ];
 
 export default sidebarConfig;

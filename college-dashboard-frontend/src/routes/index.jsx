@@ -24,6 +24,7 @@ import Integrations from '../pages/Integrations';
 import UsageBilling from '../pages/UsageBilling';
 import Settings from '../pages/Settings';
 import Analytics from '../pages/Analytics';
+import ChatPage from '../pages/ChatPage';
 
 import { ROUTES } from '../constants/api';
 
@@ -74,6 +75,7 @@ const AppRoutes = () => {
             <Route path="settings" element={<Settings />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="admin" element={<Admin />} />
+            <Route path="chat" element={<ChatPage />} />
 
             {/* AI Chatbots */}
             <Route path="chatbots" element={<AIChatbot />} />

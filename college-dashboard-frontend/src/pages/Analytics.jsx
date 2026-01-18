@@ -70,8 +70,10 @@ const Analytics = () => {
             key={kpi.label}
             className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-100 dark:border-zinc-700"
           >
-            <p className="text-sm text-gray-500">{kpi.label}</p>
-            <p className="text-2xl font-semibold text-indigo-600 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {kpi.label}
+            </p>
+            <p className="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
               {kpi.value}
             </p>
           </div>
@@ -80,17 +82,18 @@ const Analytics = () => {
 
       {/* Usage Distribution */}
       <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6">
-        <h2 className="text-lg font-semibold mb-4">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
           Platform Usage Distribution
         </h2>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {usageStats.map((u) => (
             <div key={u.label}>
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-sm mb-1 text-gray-600 dark:text-gray-400">
                 <span>{u.label}</span>
                 <span>{u.value}</span>
               </div>
+
               <div className="w-full h-2 rounded-full bg-gray-200 dark:bg-zinc-700 overflow-hidden">
                 <div
                   className={`h-full ${u.color}`}
@@ -105,7 +108,7 @@ const Analytics = () => {
       {/* Component Health */}
       <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
         <table className="w-full text-sm table-fixed">
-          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600">
+          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600 dark:text-gray-400">
             <tr>
               <th className="px-6 py-3 text-left w-1/3">
                 Component
@@ -121,14 +124,19 @@ const Analytics = () => {
 
           <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
             {components.map((c) => (
-              <tr key={c.name}>
-                <td className="px-6 py-4 font-medium">
+              <tr
+                key={c.name}
+                className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition"
+              >
+                <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">
                   {c.name}
                 </td>
-                <td className={`px-6 py-4 ${statusStyle[c.status]}`}>
+                <td
+                  className={`px-6 py-4 font-medium ${statusStyle[c.status]}`}
+                >
                   {c.status}
                 </td>
-                <td className="px-6 py-4 text-gray-500">
+                <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                   {c.metric}
                 </td>
               </tr>

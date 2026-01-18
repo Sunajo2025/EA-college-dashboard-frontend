@@ -24,6 +24,9 @@ const selectClass =
 const textareaClass =
   "w-full px-4 py-3 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none";
 
+const panelClass =
+  "bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6";
+
 const ChatbotConfigure = () => {
   const { chatbotId } = useParams();
   const navigate = useNavigate();
@@ -82,8 +85,7 @@ const ChatbotConfigure = () => {
       </div>
 
       {/* Content */}
-      <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6 min-h-[360px]">
-
+      <div className={`${panelClass} min-h-[360px]`}>
         {/* OVERVIEW */}
         {activeTab === 'Overview' && (
           <div className="space-y-5">
@@ -120,7 +122,7 @@ const ChatbotConfigure = () => {
             />
 
             <div>
-              <label className="text-sm text-gray-500">
+              <label className="text-sm text-gray-500 dark:text-gray-400">
                 Temperature: {chatbot.temperature}
               </label>
               <input
@@ -132,10 +134,10 @@ const ChatbotConfigure = () => {
                 onChange={(e) =>
                   setChatbot({
                     ...chatbot,
-                    temperature: e.target.value,
+                    temperature: Number(e.target.value),
                   })
                 }
-                className="w-full mt-2 accent-indigo-600"
+                className="w-full mt-2 accent-indigo-600 dark:accent-indigo-400"
               />
             </div>
 
@@ -148,7 +150,7 @@ const ChatbotConfigure = () => {
         {/* KNOWLEDGE BASE */}
         {activeTab === 'Knowledge Base' && (
           <div className="space-y-4">
-            <button className="px-5 py-2.5 rounded-xl bg-indigo-600/10 text-indigo-600 text-sm font-medium hover:bg-indigo-600/20 transition">
+            <button className="px-5 py-2.5 rounded-xl bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:bg-indigo-600/20 transition">
               Upload Document
             </button>
 
@@ -156,10 +158,10 @@ const ChatbotConfigure = () => {
               {chatbot.documents.map((doc) => (
                 <li
                   key={doc}
-                  className="flex justify-between items-center p-4 rounded-xl bg-gray-50 dark:bg-zinc-900"
+                  className="flex justify-between items-center p-4 rounded-xl bg-gray-50 dark:bg-zinc-900 text-gray-700 dark:text-gray-300"
                 >
                   {doc}
-                  <button className="text-red-500 text-xs font-medium">
+                  <button className="text-red-600 dark:text-red-400 text-xs font-medium">
                     Remove
                   </button>
                 </li>
@@ -204,7 +206,7 @@ const ChatbotConfigure = () => {
               placeholder="Welcome message"
             />
 
-            <pre className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900 text-xs overflow-x-auto">
+            <pre className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900 text-xs text-gray-700 dark:text-gray-300 overflow-x-auto border border-gray-200 dark:border-zinc-700">
 {`<script src="https://yourapp.ai/widget.js" data-id="${chatbotId}"></script>`}
             </pre>
           </div>
@@ -222,7 +224,7 @@ const ChatbotConfigure = () => {
               placeholder="Webhook URL"
             />
 
-            <button className="px-5 py-2.5 rounded-xl bg-indigo-600/10 text-indigo-600 text-sm font-medium hover:bg-indigo-600/20 transition">
+            <button className="px-5 py-2.5 rounded-xl bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:bg-indigo-600/20 transition">
               Enable Integration
             </button>
           </div>
@@ -230,11 +232,11 @@ const ChatbotConfigure = () => {
 
         {/* ANALYTICS */}
         {activeTab === 'Analytics' && (
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900 text-gray-700 dark:text-gray-300">
               Total Requests: 12,400
             </div>
-            <div className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900">
+            <div className="p-4 rounded-xl bg-gray-50 dark:bg-zinc-900 text-gray-700 dark:text-gray-300">
               Avg Response Time: 1.6s
             </div>
           </div>

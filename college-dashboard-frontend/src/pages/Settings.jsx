@@ -19,18 +19,18 @@ const Settings = () => {
     setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
 
   return (
-    <div className="p-6 space-y-10">
+    <div className="p-5 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
           Settings
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Manage your account, organization, and platform preferences
+          Manage organization, preferences, and security settings
         </p>
       </div>
 
-      {/* Organization Settings */}
+      {/* Organization */}
       <Section title="Organization">
         <Input
           label="Organization Name"
@@ -87,12 +87,12 @@ const Settings = () => {
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Change Password
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Update your account password
             </p>
           </div>
 
-          <button className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium">
+          <button className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition">
             Update Password
           </button>
         </div>
@@ -102,12 +102,12 @@ const Settings = () => {
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Two-Factor Authentication
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Add an extra layer of security
             </p>
           </div>
 
-          <button className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-zinc-700 text-sm font-medium">
+          <button className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-200 dark:hover:bg-zinc-600 transition">
             Enable
           </button>
         </div>
@@ -115,7 +115,7 @@ const Settings = () => {
 
       {/* Save */}
       <div className="flex justify-end">
-        <button className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium">
+        <button className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition">
           Save Changes
         </button>
       </div>
@@ -123,11 +123,11 @@ const Settings = () => {
   );
 };
 
-/* ---------- SMALL UI COMPONENTS ---------- */
+/* ---------- UI COMPONENTS ---------- */
 
 const Section = ({ title, children }) => (
-  <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6 space-y-6">
-    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+  <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-zinc-700 transition-theme space-y-6">
+    <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">
       {title}
     </h2>
     {children}
@@ -136,29 +136,34 @@ const Section = ({ title, children }) => (
 
 const Input = ({ label, value, onChange }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
       {label}
     </label>
     <input
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-zinc-700 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
     />
   </div>
 );
 
 const Select = ({ label, value, options, onChange }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+    <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
       {label}
     </label>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
     >
       {options.map((o) => (
-        <option key={o}>{o}</option>
+        <option
+          key={o}
+          className="bg-white dark:bg-zinc-900"
+        >
+          {o}
+        </option>
       ))}
     </select>
   </div>
@@ -170,15 +175,17 @@ const Toggle = ({ label, description, enabled, onToggle }) => (
       <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
         {label}
       </p>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-500 dark:text-gray-400">
         {description}
       </p>
     </div>
 
     <button
       onClick={onToggle}
-      className={`w-11 h-6 rounded-full relative transition ${
-        enabled ? 'bg-indigo-600' : 'bg-gray-300 dark:bg-zinc-600'
+      className={`relative w-11 h-6 rounded-full transition ${
+        enabled
+          ? 'bg-indigo-600'
+          : 'bg-gray-300 dark:bg-zinc-600'
       }`}
     >
       <span

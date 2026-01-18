@@ -63,10 +63,16 @@ const AIExtraction = () => {
     setJobs((prev) =>
       prev.map((j) =>
         j.id === id
-          ? { ...j, status: 'Processing', fields: '—', updated: 'Processing' }
+          ? {
+              ...j,
+              status: 'Processing',
+              fields: '—',
+              updated: 'Processing',
+            }
           : j
       )
     );
+
     setProcessingId(id);
 
     setTimeout(() => {
@@ -107,8 +113,10 @@ const AIExtraction = () => {
             key={s.label}
             className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-100 dark:border-zinc-700"
           >
-            <p className="text-sm text-gray-500">{s.label}</p>
-            <p className="text-2xl font-semibold text-indigo-600 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {s.label}
+            </p>
+            <p className="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
               {s.value}
             </p>
           </div>
@@ -118,7 +126,7 @@ const AIExtraction = () => {
       {/* Table */}
       <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
         <table className="w-full text-sm table-fixed">
-          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600">
+          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600 dark:text-gray-400">
             <tr>
               <th className="px-6 py-3 w-2/6 text-left">Extraction</th>
               <th className="px-6 py-3 w-2/6 text-left">Document</th>
@@ -133,12 +141,15 @@ const AIExtraction = () => {
               const loading = job.id === processingId;
 
               return (
-                <tr key={job.id} className="relative">
-                  <td className="px-6 py-4 font-medium truncate">
+                <tr
+                  key={job.id}
+                  className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition"
+                >
+                  <td className="px-6 py-4 font-medium truncate text-gray-900 dark:text-gray-100">
                     {job.name}
                   </td>
 
-                  <td className="px-6 py-4 truncate">
+                  <td className="px-6 py-4 truncate text-gray-700 dark:text-gray-300">
                     {job.document}
                   </td>
 
@@ -153,7 +164,7 @@ const AIExtraction = () => {
                     </span>
                   </td>
 
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
                     {loading ? '—' : job.fields}
                   </td>
 
@@ -161,29 +172,32 @@ const AIExtraction = () => {
                     <div className="flex justify-end gap-3">
                       <button
                         onClick={() => setPreviewJob(job)}
-                        className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-zinc-700 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 text-xs font-medium hover:bg-gray-200 dark:hover:bg-zinc-600 transition"
                       >
                         View
                       </button>
                       <button
                         onClick={() => rerunExtraction(job.id)}
-                        className="px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium hover:bg-indigo-600/20 transition"
                       >
                         Re-run
                       </button>
                     </div>
                   </td>
-
-                  {/* Skeleton */}
-                  {loading && (
-                    <td
-                      colSpan={5}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-pulse pointer-events-none"
-                    />
-                  )}
                 </tr>
               );
             })}
+
+            {jobs.length === 0 && (
+              <tr>
+                <td
+                  colSpan={5}
+                  className="px-6 py-10 text-center text-gray-500 dark:text-gray-400"
+                >
+                  No extraction jobs found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -192,15 +206,15 @@ const AIExtraction = () => {
       {previewJob && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-2xl p-6 space-y-4">
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               Extracted Fields
             </h2>
 
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               {Array.from({ length: previewJob.fields || 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-xl bg-gray-50 dark:bg-zinc-800"
+                  className="p-3 rounded-xl bg-gray-50 dark:bg-zinc-800 text-gray-700 dark:text-gray-300"
                 >
                   Field {i + 1}: Value
                 </div>
@@ -209,7 +223,7 @@ const AIExtraction = () => {
 
             <button
               onClick={() => setPreviewJob(null)}
-              className="mt-4 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium"
+              className="mt-4 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition"
             >
               Close
             </button>

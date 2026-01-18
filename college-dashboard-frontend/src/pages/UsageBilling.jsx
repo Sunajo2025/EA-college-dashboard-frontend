@@ -18,24 +18,9 @@ const usageBreakdown = [
 ];
 
 const billingHistory = [
-  {
-    id: 1,
-    date: 'Mar 2025',
-    amount: '$89.00',
-    status: 'Paid',
-  },
-  {
-    id: 2,
-    date: 'Feb 2025',
-    amount: '$74.50',
-    status: 'Paid',
-  },
-  {
-    id: 3,
-    date: 'Jan 2025',
-    amount: '$61.20',
-    status: 'Paid',
-  },
+  { id: 1, date: 'Mar 2025', amount: '$89.00', status: 'Paid' },
+  { id: 2, date: 'Feb 2025', amount: '$74.50', status: 'Paid' },
+  { id: 3, date: 'Jan 2025', amount: '$61.20', status: 'Paid' },
 ];
 
 const statusStyle = {
@@ -44,67 +29,92 @@ const statusStyle = {
 };
 
 const UsageBilling = () => {
+  const usedRequests = 128420;
+  const planLimit = 200000;
+  const usagePercent = Math.round((usedRequests / planLimit) * 100);
+
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-5 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
           Usage & Billing
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Monitor your AI usage and billing details
+          Track AI usage, billing cycles, and subscription details
         </p>
       </div>
 
-      {/* Usage Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {usageStats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-gray-100 dark:border-zinc-700"
+            className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-indigo-50 dark:border-zinc-700 transition-theme"
           >
-            <p className="text-sm text-gray-500">{stat.label}</p>
-            <p className="text-2xl font-semibold text-indigo-600 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {stat.label}
+            </p>
+            <p className="text-2xl font-medium text-indigo-600 dark:text-indigo-400 mt-1">
               {stat.value}
             </p>
           </div>
         ))}
       </div>
 
-      {/* Plan Overview */}
-      <div className="bg-indigo-600/10 dark:bg-indigo-500/10 rounded-2xl p-6 flex flex-col md:flex-row justify-between gap-6">
-        <div>
-          <h2 className="text-lg font-semibold text-indigo-700 dark:text-indigo-400">
-            Current Plan: Pro
-          </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-            Includes up to 200K requests per month
-          </p>
-
-          <div className="mt-4 space-y-2 text-sm">
-            <p>• Overage: $0.002 per request</p>
-            <p>• Priority support included</p>
-            <p>• Advanced analytics enabled</p>
+      {/* Plan & Usage */}
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-zinc-700 transition-theme space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+              Current Plan
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Pro Plan • 200,000 requests per month
+            </p>
           </div>
-        </div>
 
-        <div className="flex items-center">
-          <button className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium">
+          <button className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">
             Upgrade Plan
           </button>
+        </div>
+
+        {/* Usage Meter */}
+        <div>
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
+            <span>Monthly Usage</span>
+            <span>
+              {usedRequests.toLocaleString()} / {planLimit.toLocaleString()}
+            </span>
+          </div>
+
+          <div className="w-full h-3 rounded-full bg-gray-200 dark:bg-zinc-700 overflow-hidden">
+            <div
+              className={`h-full rounded-full ${
+                usagePercent > 85 ? 'bg-red-500' : 'bg-indigo-500'
+              }`}
+              style={{ width: `${usagePercent}%` }}
+            />
+          </div>
+
+          {usagePercent > 85 && (
+            <p className="text-xs text-red-600 dark:text-red-400 mt-2">
+              Approaching monthly limit
+            </p>
+          )}
         </div>
       </div>
 
       {/* Usage Breakdown */}
-      <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6">
-        <h2 className="text-lg font-semibold mb-4">
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-zinc-700 transition-theme">
+        <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
           Usage Breakdown
         </h2>
 
         <div className="space-y-4">
           {usageBreakdown.map((u) => (
             <div key={u.label}>
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
                 <span>{u.label}</span>
                 <span>{u.value}</span>
               </div>
@@ -120,35 +130,29 @@ const UsageBilling = () => {
       </div>
 
       {/* Billing History */}
-      <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
-        <table className="w-full text-sm table-fixed">
-          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600">
+      <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 overflow-hidden transition-theme">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-600 dark:text-gray-400">
             <tr>
-              <th className="px-6 py-3 text-left w-1/3">
-                Billing Period
-              </th>
-              <th className="px-6 py-3 text-left w-1/3">
-                Amount
-              </th>
-              <th className="px-6 py-3 text-left w-1/3">
-                Status
-              </th>
+              <th className="px-5 py-3 text-left">Billing Period</th>
+              <th className="px-5 py-3 text-left">Amount</th>
+              <th className="px-5 py-3 text-left">Status</th>
+              <th className="px-5 py-3 text-right">Invoice</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
+          <tbody className="divide-y divide-gray-100 dark:divide-zinc-700 text-gray-600 dark:text-gray-400">
             {billingHistory.map((bill) => (
               <tr key={bill.id}>
-                <td className="px-6 py-4">
-                  {bill.date}
-                </td>
-                <td className="px-6 py-4">
-                  {bill.amount}
-                </td>
-                <td
-                  className={`px-6 py-4 ${statusStyle[bill.status]}`}
-                >
+                <td className="px-5 py-4">{bill.date}</td>
+                <td className="px-5 py-4">{bill.amount}</td>
+                <td className={`px-5 py-4 ${statusStyle[bill.status]}`}>
                   {bill.status}
+                </td>
+                <td className="px-5 py-4 text-right">
+                  <button className="px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium hover:bg-indigo-600/20 transition">
+                    Download
+                  </button>
                 </td>
               </tr>
             ))}
@@ -156,9 +160,23 @@ const UsageBilling = () => {
         </table>
       </div>
 
+      {/* Payment Method */}
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-indigo-50 dark:border-zinc-700 transition-theme">
+        <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+          Payment Method
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Visa ending in •••• 4242
+        </p>
+
+        <button className="mt-4 px-4 py-2 rounded-xl bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 text-sm hover:bg-gray-200 dark:hover:bg-zinc-600 transition">
+          Update Payment Method
+        </button>
+      </div>
+
       {/* Notice */}
-      <div className="bg-gray-50 dark:bg-zinc-800/60 rounded-2xl p-6 text-sm text-gray-600 dark:text-gray-400">
-        Usage data refreshes every 15 minutes. Billing is calculated at the end of each billing cycle.
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-zinc-700 transition-theme text-sm text-gray-600 dark:text-gray-400">
+        Usage data refreshes every 15 minutes. Billing is finalized at the end of each billing cycle.
       </div>
     </div>
   );
