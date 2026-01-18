@@ -8,29 +8,31 @@ import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 import Layout from '../components/Layout';
+
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import Overview from '../pages/Overview';
-import Events from '../pages/Events';
-import Funding from '../pages/Funding';
-import Clubs from '../pages/Clubs';
-import Reports from '../pages/Reports';
-import ClubActivity from '../pages/ClubActivity';
+import Extraction from '../pages/Extraction';
+import Workflow from '../pages/Workflow';
+import AIChatbot from '../pages/AIChatbot';
+import ChatbotConfigure from '../pages/ChatbotConfigure';
+import Documents from '../pages/Documents';
 import Admin from '../pages/Admin';
-import EventConflicts from '../pages/EventConflicts';
-import { ROUTES } from '../constants/api';
+import KnowledgeBase from '../pages/knowledgeBase';
 import Notifications from '../pages/Notifications';
+import Integrations from '../pages/Integrations';
+import UsageBilling from '../pages/UsageBilling';
+import Settings from '../pages/Settings';
+import Analytics from '../pages/Analytics';
 
-/**
- * AppRoutes Component
- * Main routing component with AuthProvider wrapper
- */
+import { ROUTES } from '../constants/api';
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Public Routes - Redirect to dashboard if already authenticated */}
+          {/* Public Routes */}
           <Route
             path={ROUTES.SIGNIN}
             element={
@@ -48,7 +50,7 @@ const AppRoutes = () => {
             }
           />
 
-          {/* Protected Routes with Layout */}
+          {/* Protected Dashboard Routes */}
           <Route
             path="/dashboard"
             element={
@@ -57,30 +59,37 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           >
-            {/* Default dashboard route - redirect to overview */}
-            <Route index element={<Navigate to="/dashboard/overview" replace />} />
-            {/* Dashboard sub-routes */}
+            {/* Default */}
+            <Route index element={<Navigate to="overview" replace />} />
+
+            {/* Dashboard Pages */}
             <Route path="overview" element={<Overview />} />
-            <Route path="events" element={<Events />} />
-            <Route path="funding" element={<Funding />} />
-            <Route path="clubs" element={<Clubs />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="club-activity" element={<ClubActivity />} /> 
+            <Route path="ai-extraction" element={<Extraction />} />
+            <Route path="workflows" element={<Workflow />} />
+            <Route path="documents" element={<Documents />} />
+            <Route path="knowledge-base" element={<KnowledgeBase />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="integrations" element={<Integrations />} />
+            <Route path="billing" element={<UsageBilling />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="admin" element={<Admin />} />
-            <Route path="event-conflicts" element={<EventConflicts />} /> 
-            <Route path="notifications" element={<Notifications/>} /> 
+
+            {/* AI Chatbots */}
+            <Route path="chatbots" element={<AIChatbot />} />
+            <Route
+              path="chatbots/:chatbotId/configure"
+              element={<ChatbotConfigure />}
+            />
           </Route>
 
-          {/* Legacy profile route - redirect to dashboard/profile */}
+          {/* Redirects */}
           <Route
             path={ROUTES.PROFILE}
             element={<Navigate to="/dashboard/profile" replace />}
           />
 
-          {/* Default route - Redirect to dashboard overview */}
           <Route path="/" element={<Navigate to="/dashboard/overview" replace />} />
-
-          {/* Catch all - Redirect to dashboard overview */}
           <Route path="*" element={<Navigate to="/dashboard/overview" replace />} />
         </Routes>
       </AuthProvider>
@@ -89,4 +98,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-
