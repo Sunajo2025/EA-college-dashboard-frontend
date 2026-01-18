@@ -1,8 +1,4 @@
-/**
- * Club Registry Page
- * College Administrator
- */
-
+import { useState } from 'react';
 import { Plus, UserCog, Eye } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -15,6 +11,9 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
+
+import RegisterClubModal from '../components/Modal/RegisterClubModal';
+
 
 const stats = [
   { label: 'Total Clubs', value: 28 },
@@ -72,6 +71,8 @@ const statusStyles = {
 };
 
 const Clubs = () => {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <div className="p-5 space-y-6">
       {/* Header */}
@@ -80,7 +81,10 @@ const Clubs = () => {
           Club Registry
         </h1>
 
-        <button className="flex items-center gap-2 bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 dark:hover:bg-indigo-600 transition">
+          <button
+          onClick={() => setOpenModal(true)}
+          className="flex items-center cursor-pointer gap-2 bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 dark:hover:bg-indigo-600 transition"
+        >
           <Plus size={16} />
           Register Club
         </button>
@@ -248,6 +252,10 @@ const Clubs = () => {
           </table>
         </div>
       </div>
+       <RegisterClubModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </div>
   );
 };

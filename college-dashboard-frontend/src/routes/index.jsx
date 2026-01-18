@@ -19,6 +19,7 @@ import ClubActivity from '../pages/ClubActivity';
 import Admin from '../pages/Admin';
 import EventConflicts from '../pages/EventConflicts';
 import { ROUTES } from '../constants/api';
+import Notifications from '../pages/Notifications';
 
 /**
  * AppRoutes Component
@@ -66,7 +67,8 @@ const AppRoutes = () => {
             <Route path="reports" element={<Reports />} />
             <Route path="club-activity" element={<ClubActivity />} /> 
             <Route path="admin" element={<Admin />} />
-            <Route path="event-conflicts" element={<EventConflicts />} />
+            <Route path="event-conflicts" element={<EventConflicts />} /> 
+            <Route path="notifications" element={<Notifications/>} /> 
           </Route>
 
           {/* Legacy profile route - redirect to dashboard/profile */}

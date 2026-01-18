@@ -10,6 +10,11 @@ const sidebarConfig = [
     link: 'overview',
   },
   {
+    label: 'Notifications',
+    icon: 'ri-bell-line',
+    link: 'notifications',
+  },
+  {
     label: 'Club Registry',
     icon: 'ri-community-line',
     link: 'clubs',
