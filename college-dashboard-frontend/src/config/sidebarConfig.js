@@ -54,8 +54,17 @@ const sidebarConfig = [
   label: 'chat',
   icon: 'ri-message-3-line',
   link: 'chat',
+},
+ {
+  label: 'chat',
+  icon: 'ri-message-3-line',
+  link: 'chat',
+},
+ {
+  label: 'chat',
+  icon: 'ri-message-3-line',
+  link: 'chat',
 }
-
 ];
 
 export default sidebarConfig;
