@@ -1,10 +1,10 @@
 /**
  * Modern Profile Page
  * AI Platform User Dashboard
- * Tailwind CSS required
  */
 
-import { useState } from 'react'
+import { useAuth } from "../routes/AuthContext";
+import { useEffect, useState } from "react";
 import {
   Mail,
   Phone,
@@ -13,30 +13,65 @@ import {
   Link as LinkIcon,
   Plus,
   Sparkles,
-} from 'lucide-react'
+  Bot,
+  FileWarning,
+  CreditCard,
+} from "lucide-react";
+
+const banners = [
+  "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485",
+  "https://images.unsplash.com/photo-1639322537228-f710d846310a",
+];
+
+/* High Priority Notifications */
+const highPriorityNotifications = [
+  {
+    id: 1,
+    title: "Chatbot Health Degraded",
+    time: "5 mins ago",
+    icon: Bot,
+  },
+  {
+    id: 2,
+    title: "Knowledge Base Processing Failed",
+    time: "15 mins ago",
+    icon: FileWarning,
+  },
+  {
+    id: 3,
+    title: "Monthly Usage Threshold Reached",
+    time: "Today",
+    icon: CreditCard,
+  },
+];
 
 const ProfilePage = () => {
-  const [user] = useState({
-    name: 'AIRA Nova',
-    role: 'AI Platform User',
-    subtitle: 'Using AI for productivity, analytics and automation',
-    email: 'aira.user@aiplatform.com',
-    phone: '+91 98765 43210',
-    location: 'India',
-    skills: 'AI Tools, Prompting, Analytics, Automation',
-    languages: 'English, Tamil, Hindi',
-  })
+  const { user } = useAuth();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const banners = [
-    'https://images.unsplash.com/photo-1677442136019-21780ecad995',
-    'https://images.unsplash.com/photo-1620712943543-bcc4688e7485',
-    'https://images.unsplash.com/photo-1639322537228-f710d846310a',
-  ]
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % highPriorityNotifications.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "AI";
+
+  const ActiveIcon = highPriorityNotifications[activeIndex].icon;
 
   return (
     <div className="p-6 space-y-6">
-
-      {/* Banner Section */}
+      {/* Banner */}
       <div className="relative rounded-3xl overflow-hidden h-52">
         <img
           src={banners[0]}
@@ -44,35 +79,55 @@ const ProfilePage = () => {
           className="w-full h-full object-cover"
         />
 
-        {/* Stronger Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/40 flex items-center px-6">
-          <h1 className="text-2xl font-bold text-white animate-shine">
-            Welcome back, {user.name}
-          </h1>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/40 px-6 flex items-center">
+          <div className="w-full flex justify-between items-center">
+            {/* Left */}
+            <h1 className="text-2xl font-semibold text-white">
+              Welcome back{" "}
+              <span className="animate-textShine font-semibold">
+                {user?.name || "User"}
+              </span>
+            </h1>
+
+            {/* Right notification ticker */}
+            <div className="hidden md:flex items-center gap-3 text-white">
+              <div className="w-9 h-9 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center">
+                <ActiveIcon size={18} />
+              </div>
+
+              <div key={activeIndex} className="animate-fadeDown">
+                <p className="text-sm font-medium">
+                  {highPriorityNotifications[activeIndex].title}
+                </p>
+                <p className="text-xs text-gray-300">
+                  {highPriorityNotifications[activeIndex].time}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
-        {/* LEFT SECTION */}
+        {/* LEFT */}
         <div className="xl:col-span-2 space-y-6">
-
           {/* Profile Header */}
           <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6">
             <div className="flex items-start gap-4">
-              <div className="w-16 h-16 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-                AI
+              <div className="relative w-16 h-16 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl font-semibold shadow-md">
+                {initials}
+                <span className="absolute inset-0 rounded-xl animate-avatarGlow pointer-events-none" />
               </div>
 
               <div className="flex-1">
-                <h2 className="text-lg font-semibold animate-shine">
-                  {user.name}
+                <h2 className="text-lg font-semibold animate-textShine">
+                  {user?.name}
                 </h2>
                 <p className="text-sm text-indigo-500 font-medium">
-                  {user.role}
+                  AI Platform User
                 </p>
                 <p className="text-xs text-gray-400 mt-1">
-                  {user.subtitle}
+                  Leveraging AI for productivity, analytics and automation
                 </p>
               </div>
 
@@ -92,19 +147,12 @@ const ProfilePage = () => {
             </h3>
 
             <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-              This user actively leverages AI tools for daily productivity,
-              decision making, analytics insights and automation workflows.
-              The platform adapts recommendations based on usage patterns.
+              You actively use AI powered tools to improve decision making,
+              automate workflows, and gain meaningful insights from data.
             </p>
-
-            <ul className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
-              <li>• Smart task prioritization</li>
-              <li>• AI generated insights</li>
-              <li>• Personalized automation flows</li>
-            </ul>
           </div>
 
-          {/* AI Activity */}
+          {/* Activity */}
           <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-700 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
@@ -116,95 +164,68 @@ const ProfilePage = () => {
                 New Task
               </button>
             </div>
-
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-zinc-900 text-gray-500">
-                <tr>
-                  <th className="px-6 py-3 text-left">Module</th>
-                  <th className="px-6 py-3 text-left">Last Used</th>
-                  <th className="px-6 py-3 text-left">AI Credits</th>
-                  <th className="px-6 py-3 text-left">Status</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-gray-100 dark:divide-zinc-700">
-                {['AI Chat', 'Analytics', 'Automation'].map((item) => (
-                  <tr
-                    key={item}
-                    className="hover:bg-indigo-50 dark:hover:bg-zinc-900/50 transition"
-                  >
-                    <td className="px-6 py-4 font-medium animate-shine">
-                      {item}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                      Today
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                      120
-                    </td>
-                    <td className="px-6 py-4 text-indigo-600 font-medium">
-                      Active
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </div>
 
-        {/* RIGHT SECTION */}
+        {/* RIGHT */}
         <div className="space-y-6">
-
           <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6 space-y-4">
-            <DetailRow icon={Phone} label="Phone" value={user.phone} />
-            <DetailRow icon={Mail} label="Email" value={user.email} />
-            <DetailRow icon={MapPin} label="Languages" value={user.languages} />
-            <DetailRow icon={FileText} label="Skills" value={user.skills} />
-          </div>
-
-          <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-100 dark:border-zinc-700 p-6">
-            <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
-              AI Usage Report
-            </p>
-
-            <button className="flex items-center gap-2 text-sm text-indigo-600 hover:underline animate-shine">
-              <LinkIcon size={14} />
-              Download report
-            </button>
+            <DetailRow icon={Phone} label="Phone" value={user?.phoneNumber || "N/A"} />
+            <DetailRow icon={Mail} label="Email" value={user?.email || "N/A"} />
+            <DetailRow icon={MapPin} label="Location" value="India" />
+            <DetailRow icon={FileText} label="Organization" value={user?.organizationName || "N/A"} />
           </div>
         </div>
       </div>
 
       {/* Animations */}
-      <style jsx>{`
-        @keyframes shine {
-          0% { background-position: -200% }
-          100% { background-position: 200% }
-        }
-        .animate-shine {
-          background: linear-gradient(
-            90deg,
-            #2563eb,
-            #60a5fa,
-            #2563eb
-          );
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shine 3s linear infinite;
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes textShine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+          }
+
+          .animate-textShine {
+            background: linear-gradient(90deg, #2563eb, #93c5fd, #2563eb);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+          }
+
+          @keyframes fadeDown {
+            0% { opacity: 0; transform: translateY(-6px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+
+          .animate-fadeDown {
+            animation: fadeDown 0.6s ease-out;
+          }
+
+          .animate-avatarGlow {
+            box-shadow: 0 0 18px rgba(99,102,241,0.45);
+            animation: avatarPulse 3s ease-in-out infinite;
+          }
+
+          @keyframes avatarPulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+          }
+        `}
+      </style>
     </div>
-  )
-}
+  );
+};
 
 /* Components */
 
 const IconLink = ({ label }) => (
-  <div className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center text-gray-600 dark:text-gray-300 cursor-pointer">
+  <div className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-zinc-700 flex items-center justify-center text-gray-600 dark:text-gray-300 cursor-pointer hover:scale-105 transition">
     {label}
   </div>
-)
+);
 
 const DetailRow = ({ icon: Icon, label, value }) => (
   <div className="flex gap-3">
@@ -213,11 +234,9 @@ const DetailRow = ({ icon: Icon, label, value }) => (
     </div>
     <div>
       <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-      <p className="text-sm animate-shine">
-        {value}
-      </p>
+      <p className="text-sm animate-textShine">{value}</p>
     </div>
   </div>
-)
+);
 
-export default ProfilePage
+export default ProfilePage;

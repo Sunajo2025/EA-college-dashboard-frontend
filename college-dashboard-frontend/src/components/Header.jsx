@@ -225,7 +225,7 @@ const Header = ({ isSidebarOpen, user, onSignout }) => {
             </div>
 
             {/* User Menu */}
-            <div className="relative" ref={menuRef}>
+            <div className="relative " ref={menuRef}>
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium"
@@ -234,7 +234,7 @@ const Header = ({ isSidebarOpen, user, onSignout }) => {
               </button>
 
               {menuOpen && (
-                <div className="text-gray-900 dark:text-gray-100 absolute right-0 mt-3 w-44 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-700 py-2 z-30">
+                <div className= "text-gray-900 dark:text-gray-100 absolute right-0 mt-3 w-44 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-700 py-2 z-30">
                   <button onClick={() => navigate("/dashboard/profile")} className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-zinc-700 w-full">
                     <Edit size={16} />
                     View Profile
