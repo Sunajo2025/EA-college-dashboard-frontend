@@ -15,6 +15,11 @@ const sidebarConfig = [
     link: 'notifications',
   },
   {
+  label: 'chat',
+  icon: 'ri-message-3-line',
+  link: 'chat',
+},
+  {
     label: 'AI Chatbots',
     icon: 'ri-robot-line',
     link: 'chatbots',
@@ -55,11 +60,7 @@ const sidebarConfig = [
     icon: 'ri-wallet-3-line',
     link: 'billing',
   },
- {
-  label: 'chat',
-  icon: 'ri-message-3-line',
-  link: 'chat',
-},
+ 
 
 ];
 

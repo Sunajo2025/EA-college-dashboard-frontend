@@ -21,7 +21,7 @@ const ChatPage = () => {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!input.trim() || typing) return;
 
     const userMsg = {
@@ -38,22 +38,48 @@ const ChatPage = () => {
     setInput('');
     setTyping(true);
 
-    setTimeout(() => {
+    try {
+      const res = await fetch('http://127.0.0.1:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMsg.text }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Chat failed');
+      }
+
+      const aiMsg = {
+        id: Date.now() + 1,
+        role: 'ai',
+        text: data.reply,
+        time: new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+      };
+
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           role: 'ai',
-          text:
-            'This is a sample AI response with modern UI effects. Backend integration comes next.',
+          text: 'Sorry, something went wrong. Please try again.',
           time: new Date().toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
           }),
         },
       ]);
+    } finally {
       setTyping(false);
-    }, 1600);
+    }
   };
 
   useEffect(() => {
