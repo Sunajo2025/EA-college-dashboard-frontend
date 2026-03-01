@@ -1,78 +1,44 @@
 /**
  * Sidebar Configuration
- * AI Platform Navigation
+ * Centralized sidebar navigation configuration
  */
 
 const sidebarConfig = [
   {
-    label: 'overview',
+    label: 'Overview',
     icon: 'ri-dashboard-line',
     link: 'overview',
   },
   {
-    label: 'Notifications',
-    icon: 'ri-notification-3-line',
-    link: 'notifications',
+    label: 'Club Registry',
+    icon: 'ri-community-line',
+    link: 'clubs',
   },
   {
-    label: 'Meeting',
-    icon: 'ri-video-chat-line',
-    link: 'meetings',
-  },
-
-  {
-    label: 'chat',
-    icon: 'ri-message-3-line',
-    link: 'chat',
+    label: 'Events Hub',
+    icon: 'ri-calendar-event-line',
+    link: 'events',
   },
   {
-    label: 'AI Chatbots',
-    icon: 'ri-robot-line',
-    link: 'chatbots',
-  },
-
-  {
-    label: 'Knowledge Base',
-    icon: 'ri-database-2-line',
-    link: 'knowledge-base',
+    label: 'Club Activity',
+    icon: 'ri-pulse-line',
+    link: 'club-activity',
   },
   {
-    label: 'Documents',
-    icon: 'ri-file-text-line',
-    link: 'documents',
-  },
-  {
-    label: 'AI Extraction',
-    icon: 'ri-magic-line',
-    link: 'ai-extraction',
-  },
-  {
-    label: 'Workflows',
-    icon: 'ri-flow-chart',
-    link: 'workflows',
-  },
-  {
-    label: 'Integrations',
-    icon: 'ri-plug-line',
-    link: 'integrations',
+    label: 'Schedule Conflicts',
+    icon: 'ri-error-warning-line',
+    link: 'event-conflicts',
   },
   {
     label: 'Analytics',
     icon: 'ri-bar-chart-box-line',
-    link: 'analytics',
+    link: 'reports',
   },
   {
-    label: 'Jobs Descriptions',
-    icon: 'ri-briefcase-line',
-    link: 'jd-chatbots',
-  },
-  {
-    label: 'Usage & Billing',
+    label: 'Funding & Budget',
     icon: 'ri-wallet-3-line',
-    link: 'billing',
+    link: 'funding',
   },
-
-
 ];
 
 export default sidebarConfig;

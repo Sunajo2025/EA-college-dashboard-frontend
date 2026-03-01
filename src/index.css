@@ -1,8 +1,4 @@
 @import "tailwindcss";
-@config "../tailwind.config.js";
-
-/* Use selector strategy for dark mode (Tailwind v4) */
-@variant dark (&:where(.dark, .dark *));
 
 /* Typography - DM Sans */
 * {
@@ -59,6 +55,3 @@ html {
 .dark {
   --tooltip-bg: #1f2937;
 }
-
-
-

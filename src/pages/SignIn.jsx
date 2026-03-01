@@ -6,32 +6,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../routes/AuthContext";
-import { ToastContainer } from "../components/Toast";
 
 const SignIn = () => {
   const { signin, loading, error, clearError } = useAuth();
 
   const [formData, setFormData] = useState({
-    username: "",
+    tenantId: "",
+    email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({});
-
-  const [toasts, setToasts] = useState([]);
-
-  const addToast = (message, type = 'info') => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -49,8 +38,14 @@ const SignIn = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username.trim()) {
-      newErrors.username = "Email or phone number is required";
+    if (!formData.tenantId.trim()) {
+      newErrors.tenantId = "Shop/Tenant ID is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
+      newErrors.email = "Email is invalid";
     }
 
     if (!formData.password) {
@@ -63,9 +58,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    e.preventDefault();
-    setErrors({});
-    clearError();
+    setSuccess("");
     clearError();
 
     const validationErrors = validateForm();
@@ -75,40 +68,21 @@ const SignIn = () => {
     }
 
     try {
-      const response = await signin({
-        username: formData.username.trim(),
+      await signin({
+        tenantId: formData.tenantId.trim(),
+        email: formData.email.trim(),
         password: formData.password,
       });
 
-
-
-      /**
-       * Expected response structure:
-       * {
-       *   message: "Login successful",
-       *   user: { id, name, email, phoneNumber, organizationName }
-       * }
-       */
-
-      if (response?.user?.id) {
-        sessionStorage.setItem("userId", response.user.id);
-      }
-
-      if (response?.user?.id) {
-        sessionStorage.setItem("userId", response.user.id);
-      }
-
-      addToast("Signin successful. Redirecting...", "success");
+      setSuccess("Signin successful! Redirecting...");
     } catch (err) {
-      addToast(err.message || "Signin error", "error");
       console.error("Signin error:", err);
     }
   };
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
-      {/* Left Image */}
+      {/* Left Side Image */}
       <div className="hidden lg:flex w-1/2 bg-gray-100">
         <img
           src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
@@ -117,29 +91,51 @@ const SignIn = () => {
         />
       </div>
 
-      {/* Form */}
+      {/* Right Side Form */}
       <div className="flex flex-col justify-center w-full lg:w-1/2 px-8 sm:px-16 lg:px-24">
         <h2 className="text-2xl font-bold mb-6">
           Sign in to your account
         </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* Tenant ID */}
           <div>
             <input
               type="text"
-              name="username"
-              placeholder="Email or Phone Number"
-              value={formData.username}
+              name="tenantId"
+              placeholder="Shop/Tenant ID"
+              value={formData.tenantId}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {errors.username && (
+            {errors.tenantId && (
               <p className="text-red-600 text-sm mt-1">
-                {errors.username}
+                {errors.tenantId}
+              </p>
+            )}
+            <p className="text-xs text-gray-500 mt-1">
+              Enter your shop or tenant identifier
+            </p>
+          </div>
+
+          {/* Email */}
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            {errors.email && (
+              <p className="text-red-600 text-sm mt-1">
+                {errors.email}
               </p>
             )}
           </div>
 
+          {/* Password */}
           <div>
             <input
               type="password"
@@ -159,21 +155,30 @@ const SignIn = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 rounded-md text-white font-semibold ${loading
+            className={`w-full py-2 rounded-md text-white font-semibold ${
+              loading
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-indigo-600 hover:bg-indigo-700"
-              }`}
+            }`}
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
 
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && (
+            <p className="text-red-600 text-sm">{error}</p>
+          )}
+
+          {success && (
+            <p className="text-green-600 text-sm">{success}</p>
+          )}
         </form>
 
         <p className="mt-4 text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link to="/signup" className="text-indigo-600 hover:underline">
+          <Link
+            to="/signup"
+            className="text-indigo-600 hover:underline"
+          >
             Create one
           </Link>
         </p>

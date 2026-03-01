@@ -89,9 +89,6 @@ export const signin = async (credentials) => {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
-     if (response?.user?.id) {
-      sessionStorage.setItem("userId", response.user.id);
-    }
     return response;
   } catch (error) {
     throw new Error(error.message || 'Signin failed. Please check your credentials.');
